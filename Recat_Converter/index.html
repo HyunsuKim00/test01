@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<head>
+    <title>Converter</title>
+</head>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        function MinutesToHours() {
+            const [amount, setAmount] = React.useState(0);
+            const [flipped, setFlipped] = React.useState(false);
+            const onChange = (event) => {
+                setAmount(event.target.value);
+            }
+            const reset = () => setAmount(0);
+            const onFlip = () => {
+                reset();
+                setFlipped((current) => !current);} /*current의 반대*/
+            return(
+                <div>
+                    <h3>Minutes to Hours</h3>
+                    <div>
+                        <label for="minutes">Minutes </label>
+                        <input value={flipped ? amount*60 : amount} id="minutes" type="number" 
+                        onChange={onChange}
+                        disabled={flipped}/>
+                    </div>
+                    <div>
+                        <label for="hours">Hours </label>
+                        <input value={flipped ? amount : amount/60} id="hours" type="number" 
+                        onChange={onChange}
+                        disabled={!flipped}/>
+                    </div>
+                    <button onClick={reset}>Reset</button>
+                    <button onClick={onFlip}>Flipped</button>
+                </div>
+            );
+        }
+        function KilometersToMiles() {
+            const [distance,setDistance] = React.useState(0);
+            const [flipped, setFlipped] = React.useState(false);
+            const onChange = (event) => {setDistance(event.target.value)};
+            const onFlip = () => {reset(); setFlipped((current) => !current);};
+            const reset = () => {setDistance(0)};
+            return (
+                <div>
+                    <h3>KM to Miles</h3>
+                    <div>
+                        <div>
+                            <label for="kilometers"> Kilometers </label>
+                            <input value = {!flipped ? distance : distance * 1.6} id="kilometers" type="number" onChange={onChange} disabled={flipped}/>
+                        </div>
+                        <div>
+                            <label for="miles"> Miles </label>
+                            <input value = {!flipped ? distance / 1.6 : distance} id="miles" type="number" onChange={onChange} disabled={!flipped}/>
+                        </div>
+                    </div>
+                    <button onClick={reset}>Reset</button>
+                    <button onClick={onFlip}>Flipped</button>
+                </div>
+            );
+        }
+        function App() {
+            const [index, setIndex] = React.useState("0");
+            const onSelect = (event) => {setIndex(event.target.value);}
+            return (
+                <div>
+                    <h1>Super Converter</h1>
+                    <select value={index} onChange={onSelect}>
+                        <option value="0" disabled selected hidden>select your units</option>
+                        <option value="1">min & hours</option>
+                        <option value="2">km & miles</option>    
+                    </select>
+                    <hr/>
+                    {index === "0" ? "Please select your units" : null}
+                    {index === "1" ? <MinutesToHours/> : null}
+                    {index === "2" ? <KilometersToMiles/> : null}
+                </div>
+            );
+        }
+        const root = document.getElementById("root");
+        ReactDOM.render(<App/>, root);
+    </script>
+</html>
+
